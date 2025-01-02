@@ -225,21 +225,27 @@ const CargaPage = () => {
                   alignContent={'center'}
                   xs={4}
                 >
-                  <ResponsiveImageBox
-                    w="140px"
-                    h="140px"
-                    url={`${urlBack}/api/${singleOrder.package.image1}`}
-                  />
-                  <ResponsiveImageBox
-                    w="140px"
-                    h="140px"
-                    url={`${urlBack}/api/${singleOrder.package.image2}`}
-                  />
-                  <ResponsiveImageBox
-                    w="140px"
-                    h="140px"
-                    url={`${urlBack}/api/${singleOrder.package.image3}`}
-                  />
+                  {singleOrder.package.image2 && (
+                    <ResponsiveImageBox
+                      w="140px"
+                      h="140px"
+                      url={`${urlBack}/api/${singleOrder.package.image2}`}
+                    />
+                  )}
+                  {singleOrder.package.image3 && (
+                    <ResponsiveImageBox
+                      w="140px"
+                      h="140px"
+                      url={`${urlBack}/api/${singleOrder.package.image3}`}
+                    />
+                  )}
+                  {singleOrder.package.image4 && (
+                    <ResponsiveImageBox
+                      w="140px"
+                      h="140px"
+                      url={`${urlBack}/api/${singleOrder.package.image4}`}
+                    />
+                  )}
                 </Grid>
                 <Grid
                   item
@@ -248,7 +254,7 @@ const CargaPage = () => {
                   xs={8}
                 >
                   <ResponsiveImageBox
-                    url={`${urlBack}/api/${singleOrder.package.image4}`}
+                    url={`${urlBack}/api/${singleOrder.package.image1}`}
                   />
                 </Grid>
               </Grid>
