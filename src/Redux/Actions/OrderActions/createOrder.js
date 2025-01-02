@@ -37,10 +37,10 @@ export const createOrder = (
     dispatch({ type: CREATE_ORDER_PENDING });
     try {
       const formData = new FormData();
-      formData.append('image1', image1?.[0]);
-      formData.append('image2', image2?.[0]);
-      formData.append('image3', image3?.[0]);
-      formData.append('image4', image4?.[0]);
+      formData.append('image1', image1);
+      formData.append('image2', image2);
+      formData.append('image3', image3);
+      formData.append('image4', image4);
       formData.append('product_name', product_name);
       formData.append('quantity', quantity);
       formData.append('type', type);

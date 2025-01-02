@@ -28,6 +28,9 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/es'; // Importar configuración de idioma español
 import { TimeField } from '@mui/x-date-pickers';
 import './styles.css';
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
+import { useEffect } from 'react';
 
 dayjs.locale('es'); // Establecer el idioma globalmente para dayjs
 
@@ -48,20 +51,21 @@ const PageCrearEnvios = () => {
   const dispatch = useDispatch();
 
   const inputFileStyles = {
+    display: 'none',
     border: 'solid 1px red',
     position: 'absolute',
-    width: mobile ? '90px' : '139px',
-    height: mobile ? '90px' : '142px',
+    width: 'auto',
     cursor: 'pointer',
-    opacity: 0,
+    opacity: 1,
   };
 
   const imageStyles = {
     display: 'flex',
-    // border: 'solid 1px red',
+    cursor: 'pointer',
+    backgroundColor: 'grey',
     borderRadius: '8px',
-    width: mobile ? '90px' : '139px',
-    height: mobile ? '90px' : '142px',
+    width: mobile ? '90px' : '134px',
+    height: mobile ? '90px' : '138px',
     overFlow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
@@ -113,6 +117,34 @@ const PageCrearEnvios = () => {
   const [showImage3, setShowImage3] = React.useState('');
   const [showImage4, setShowImage4] = React.useState('');
 
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  const handleImageChange = (event) => {
+    const files = Array.from(event.target.files);
+
+    // Actualizar el estado usando la versión de callback
+    setSelectedImages((prevImages) => {
+      const updatedImages = [...prevImages, ...files];
+
+      // Validar que no se seleccionen más de 4 imágenes
+      if (updatedImages.length > 4) {
+        const notyf = new Notyf();
+        notyf.error('Solo puedes seleccionar hasta 4 imágenes.');
+        return prevImages; // No actualizamos si supera el límite
+      }
+
+      // Procesar los archivos para generar las vistas previas
+      updatedImages.forEach((file, index) => {
+        setValue(`image${index + 1}`, file, {
+          shouldValidate: true,
+        });
+        setFileToBase(file, index + 1);
+      });
+
+      return updatedImages; // Actualizar el estado con las imágenes válidas
+    });
+  };
+
   const setFileToBase = (file, imageNum) => {
     if (file) {
       const reader = new FileReader();
@@ -133,6 +165,9 @@ const PageCrearEnvios = () => {
 
   const handleFileChange = (ev, imageNum) => {
     const selectedFile = ev.target.files?.[0];
+    setValue(`image${imageNum}`, selectedFile, {
+      shouldValidate: true,
+    });
     setFileToBase(selectedFile, imageNum);
   };
 
@@ -160,6 +195,11 @@ const PageCrearEnvios = () => {
   };
 
   const onClick = (data) => {
+    if (stepIndex === 1 && !selectedImages.length) {
+      const notyf = new Notyf();
+      notyf.error('Selecciona al menos una imagen');
+      return;
+    }
     if (stepIndex < steps.length - 1) {
       setStepIndex(stepIndex + 1);
     } else {
@@ -835,17 +875,39 @@ const PageCrearEnvios = () => {
                     style={{ color: '#475367', fontWeight: 500 }}
                     htmlFor={'imagenes'}
                   >
-                    Imagénes del producto
+                    selecciona hasta 4 imagenes
                   </label>
-                  <label
+                  <Box
                     style={{
-                      color: '#475367',
-                      fontWeight: 800,
-                      cursor: 'pointer',
+                      display: 'flex',
+                      // overflow: 'hidden',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '10px',
                     }}
                   >
-                    Subir
-                  </label>
+                    <input
+                      type="file"
+                      id="imageInput"
+                      accept="image/*"
+                      style={inputFileStyles}
+                      multiple
+                      onChange={handleImageChange}
+                    />
+                    <button
+                      style={{
+                        border: 'none',
+                        color: '#475367',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                      }}
+                      onClick={() =>
+                        document.getElementById('imageInput').click()
+                      }
+                    >
+                      Subir
+                    </button>
+                  </Box>
                 </Stack>
 
                 <Grid
@@ -857,150 +919,154 @@ const PageCrearEnvios = () => {
                   justifyContent={'flex-start'}
                   spacing={1}
                 >
-                  <Box
-                    item
-                    container
-                    xs={6}
-                    sm={3}
-                    direction="row"
-                    justifyContent={'center'}
-                    style={imageStyles}
-                    width={mobile ? '370px' : '666px'}
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      style={inputFileStyles}
-                      {...register('image1', {
-                        required: {
-                          value: true,
-                          message: 'Image is required',
-                        },
-                      })}
-                      onChange={(ev) => {
-                        handleFileChange(ev, 1);
-                      }}
-                    />
-                    <img
-                      src={
-                        showImage1 ? showImage1 : '/image/default.svg'
+                  {showImage1 && (
+                    <Box
+                      item
+                      container
+                      xs={6}
+                      sm={3}
+                      direction="row"
+                      justifyContent={'center'}
+                      style={imageStyles}
+                      width={mobile ? '370px' : '666px'}
+                      onClick={() =>
+                        document.getElementById('image1').click()
                       }
-                      style={{
-                        borderRadius: '8px',
-                        maxHeight: '100%',
-                        maxWidth: '100%',
-                      }}
-                      alt="imagen de prueba"
-                    />
-                  </Box>
-                  <Box
-                    item
-                    container
-                    xs={6}
-                    sm={3}
-                    direction="row"
-                    justifyContent={'center'}
-                    style={imageStyles}
-                    width={mobile ? '370px' : '666px'}
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      style={inputFileStyles}
-                      {...register('image2', {
-                        required: {
-                          value: true,
-                          message: 'Image is required',
-                        },
-                      })}
-                      onChange={(ev) => {
-                        handleFileChange(ev, 2);
-                      }}
-                    />
-                    <img
-                      src={
-                        showImage2 ? showImage2 : '/image/default.svg'
+                    >
+                      <input
+                        id="image1"
+                        type="file"
+                        accept="image/*"
+                        style={inputFileStyles}
+                        onChange={(ev) => {
+                          handleFileChange(ev, 1);
+                        }}
+                      />
+                      <img
+                        src={
+                          showImage1
+                            ? showImage1
+                            : '/image/default.svg'
+                        }
+                        style={{
+                          maxHeight: '100%',
+                          maxWidth: '100%',
+                        }}
+                        alt="imagen de prueba"
+                      />
+                    </Box>
+                  )}
+                  {showImage2 && (
+                    <Box
+                      item
+                      container
+                      xs={6}
+                      sm={3}
+                      direction="row"
+                      justifyContent={'center'}
+                      style={imageStyles}
+                      width={mobile ? '370px' : '666px'}
+                      onClick={() =>
+                        document.getElementById('image2').click()
                       }
-                      style={{
-                        maxHeight: '100%',
-                        maxWidth: '100%',
-                        borderRadius: '8px',
-                      }}
-                      alt="imagen de prueba"
-                    />
-                  </Box>
-                  <Box
-                    item
-                    container
-                    xs={6}
-                    sm={3}
-                    direction="row"
-                    justifyContent={'center'}
-                    style={imageStyles}
-                    width={mobile ? '370px' : '666px'}
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      style={inputFileStyles}
-                      {...register('image3', {
-                        required: {
-                          value: true,
-                          message: 'Image is required',
-                        },
-                      })}
-                      onChange={(ev) => {
-                        handleFileChange(ev, 3);
-                      }}
-                    />
-                    <img
-                      src={
-                        showImage3 ? showImage3 : '/image/default.svg'
+                    >
+                      <input
+                        id="image2"
+                        type="file"
+                        accept="image/*"
+                        style={inputFileStyles}
+                        onChange={(ev) => {
+                          handleFileChange(ev, 2);
+                        }}
+                      />
+                      <img
+                        src={
+                          showImage2
+                            ? showImage2
+                            : '/image/default.svg'
+                        }
+                        style={{
+                          maxHeight: '100%',
+                          maxWidth: '100%',
+                        }}
+                        alt="imagen de prueba"
+                      />
+                    </Box>
+                  )}
+                  {showImage3 && (
+                    <Box
+                      item
+                      container
+                      xs={6}
+                      sm={3}
+                      direction="row"
+                      justifyContent={'center'}
+                      style={imageStyles}
+                      width={mobile ? '370px' : '666px'}
+                      onClick={() =>
+                        document.getElementById('image3').click()
                       }
-                      style={{
-                        maxHeight: '100%',
-                        maxWidth: '100%',
-                        borderRadius: '8px',
-                      }}
-                      alt="imagen de prueba"
-                    />
-                  </Box>
-                  <Box
-                    item
-                    container
-                    xs={6}
-                    sm={3}
-                    direction="row"
-                    justifyContent={'center'}
-                    style={imageStyles}
-                    width={mobile ? '370px' : '666px'}
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      style={inputFileStyles}
-                      {...register('image4', {
-                        required: {
-                          value: true,
-                          message: 'Image is required',
-                        },
-                      })}
-                      onChange={(ev) => {
-                        handleFileChange(ev, 4);
-                      }}
-                    />
-                    <img
-                      src={
-                        showImage4 ? showImage4 : '/image/default.svg'
+                    >
+                      <input
+                        id="image3"
+                        type="file"
+                        accept="image/*"
+                        style={inputFileStyles}
+                        onChange={(ev) => {
+                          handleFileChange(ev, 3);
+                        }}
+                      />
+                      <img
+                        src={
+                          showImage3
+                            ? showImage3
+                            : '/image/default.svg'
+                        }
+                        style={{
+                          maxHeight: '100%',
+                          maxWidth: '100%',
+                        }}
+                        alt="imagen de prueba"
+                      />
+                    </Box>
+                  )}
+                  {showImage4 && (
+                    <Box
+                      item
+                      container
+                      xs={6}
+                      sm={3}
+                      direction="row"
+                      justifyContent={'center'}
+                      style={imageStyles}
+                      width={mobile ? '370px' : '666px'}
+                      onClick={() =>
+                        document.getElementById('image4').click()
                       }
-                      style={{
-                        maxHeight: '100%',
-                        maxWidth: '100%',
-                        borderRadius: '8px',
-                      }}
-                      alt="imagen de prueba"
-                    />
-                  </Box>
+                    >
+                      <input
+                        id="image4"
+                        type="file"
+                        accept="image/*"
+                        style={inputFileStyles}
+                        onChange={(ev) => {
+                          handleFileChange(ev, 4);
+                        }}
+                      />
+                      <img
+                        src={
+                          showImage4
+                            ? showImage4
+                            : '/image/default.svg'
+                        }
+                        style={{
+                          maxHeight: '100%',
+                          maxWidth: '100%',
+                        }}
+                        alt="imagen de prueba"
+                      />
+                    </Box>
+                  )}
                 </Grid>
                 {(errors.image1 ||
                   errors.image2 ||
