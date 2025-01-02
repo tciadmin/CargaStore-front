@@ -30,7 +30,6 @@ import { TimeField } from '@mui/x-date-pickers';
 import './styles.css';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
-import { useEffect } from 'react';
 
 dayjs.locale('es'); // Establecer el idioma globalmente para dayjs
 
@@ -62,7 +61,7 @@ const PageCrearEnvios = () => {
   const imageStyles = {
     display: 'flex',
     cursor: 'pointer',
-    backgroundColor: 'grey',
+    backgroundColor: 'black',
     borderRadius: '8px',
     width: mobile ? '90px' : '134px',
     height: mobile ? '90px' : '138px',
@@ -880,7 +879,6 @@ const PageCrearEnvios = () => {
                   <Box
                     style={{
                       display: 'flex',
-                      // overflow: 'hidden',
                       alignItems: 'center',
                       justifyContent: 'center',
                       width: '10px',

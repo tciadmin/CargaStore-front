@@ -49,10 +49,10 @@ export const editOrder = (
       formData.append('delivery_date', delivery_date);
       formData.append('delivery_time', delivery_time);
       formData.append('delivery_address', delivery_address);
-      formData.append('image1', image1?.[0]);
-      formData.append('image2', image2?.[0]);
-      formData.append('image3', image3?.[0]);
-      formData.append('image4', image4?.[0]);
+      formData.append('image1', image1);
+      formData.append('image2', image2);
+      formData.append('image3', image3);
+      formData.append('image4', image4);
       const response = await axiosInstance.put(
         `/order/edit/${orderId}`,
         formData
