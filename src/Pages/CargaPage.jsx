@@ -367,31 +367,44 @@ const CargaPage = () => {
                     overflowY: 'hidden',
                     position: 'relative',
                     maxWidth: '100vw',
+                    gap: '5px',
                   }}
                 >
                   <img
                     src={`${urlBack}/api/${singleOrder.package.image1}`}
-                    width="130px"
                     style={{
-                      flex: '0 0 auto',
-                      marginRight: '5px',
-                      marginLeft: '5px',
+                      width: '130px',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      backgroundColor: 'black',
                     }}
                   />
                   <img
                     src={`${urlBack}/api/${singleOrder.package.image2}`}
-                    width="130px"
-                    style={{ flex: '0 0 auto', marginRight: '5px' }}
+                    style={{
+                      width: '130px',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      backgroundColor: 'black',
+                    }}
                   />
                   <img
                     src={`${urlBack}/api/${singleOrder.package.image3}`}
-                    width="130px"
-                    style={{ flex: '0 0 auto', marginRight: '5px' }}
+                    style={{
+                      width: '130px',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      backgroundColor: 'black',
+                    }}
                   />
                   <img
                     src={`${urlBack}/api/${singleOrder.package.image4}`}
-                    width="130px"
-                    style={{ flex: '0 0 auto', marginRight: '5px' }}
+                    style={{
+                      width: '130px',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      backgroundColor: 'black',
+                    }}
                   />
                 </div>
               )}
