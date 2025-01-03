@@ -354,7 +354,13 @@ const ShipmentsItem = ({
                 marginLeft: '3px',
               }}
             >
-              {`$${price}`}
+              {`$${
+                userRole === 'driver'
+                  ? new Intl.NumberFormat('de-DE').format(
+                      (price * 90) / 100
+                    )
+                  : new Intl.NumberFormat('de-DE').format(price)
+              }`}
             </p>
           </Grid>
           <Grid

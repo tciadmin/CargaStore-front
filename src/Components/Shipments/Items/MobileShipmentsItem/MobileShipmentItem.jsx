@@ -149,7 +149,13 @@ const MobileShipmentItem = ({
               color: '#007C52',
             }}
           >
-            {`$${price}`}{' '}
+            {`$${
+              user.role === 'driver'
+                ? new Intl.NumberFormat('de-DE').format(
+                    (price * 90) / 100
+                  )
+                : new Intl.NumberFormat('de-DE').format(price)
+            }`}{' '}
           </p>
         </Box>
       </Box>

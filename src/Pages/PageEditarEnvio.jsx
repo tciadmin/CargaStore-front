@@ -120,13 +120,6 @@ const PageEditarEnvio = () => {
 
   const [selectedImages, setSelectedImages] = useState([]);
 
-  React.useEffect(() => {
-    console.log({ selectedImages });
-    const images = watch(['image1', 'image2', 'image3', 'image4']);
-    console.log({ images });
-    console.log({ showImage1, showImage2, showImage3, showImage4 });
-  }, [selectedImages]);
-
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
 
@@ -243,7 +236,12 @@ const PageEditarEnvio = () => {
     setValue('type', singleOrder?.package?.type);
     setValue('weight', singleOrder?.package?.weight);
     setValue('volume', singleOrder?.package?.volume);
-    setValue('offered_price', singleOrder?.package?.offered_price);
+    setValue(
+      'offered_price',
+      new Intl.NumberFormat('de-DE').format(
+        singleOrder?.package?.offered_price
+      )
+    );
     setValue('orderType', singleOrder?.orderType);
     setValue('pick_up_date', dayjs(singleOrder?.pick_up_date));
     setValue('pick_up_time', singleOrder?.pick_up_time);

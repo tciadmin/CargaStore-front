@@ -38,7 +38,10 @@ export const editOrder = (
       formData.append('type', type);
       formData.append('weight', weight);
       formData.append('volume', volume);
-      formData.append('offered_price', offered_price);
+      formData.append(
+        'offered_price',
+        offered_price.replace(/\./g, '')
+      );
       formData.append('orderType', orderType);
       formData.append('receiving_company', receiving_company);
       formData.append('contact_number', contact_number);

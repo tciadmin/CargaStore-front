@@ -32,7 +32,13 @@ const MarketplaceCard = ({
         >
           {' '}
           Valor ofertado:{' '}
-          <span style={{ fontWeight: 400 }}> $ {price}</span>{' '}
+          <span style={{ fontWeight: 400 }}>
+            {' '}
+            ${' '}
+            {new Intl.NumberFormat('de-DE').format(
+              (price * 90) / 100
+            )}
+          </span>{' '}
         </p>
         <Typography fontSize={'16px'} fontWeight={400}>
           {title}{' '}

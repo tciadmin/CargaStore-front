@@ -46,7 +46,10 @@ export const createOrder = (
       formData.append('type', type);
       formData.append('weight', weight);
       formData.append('volume', volume);
-      formData.append('offered_price', offered_price);
+      formData.append(
+        'offered_price',
+        offered_price.replace(/\./g, '')
+      );
       // formData.append('product_pic', product_pic);
       formData.append('orderType', orderType);
       formData.append('receiving_company', receiving_company);
