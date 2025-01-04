@@ -194,11 +194,6 @@ const PageEditarEnvio = () => {
     setValue('offered_price', formattedValue); // Actualiza el valor en react-hook-form
   };
 
-  // const formatPayment = (e) => {
-  //   const formattedValue = formatNumber(e.target.value);
-  //   setValue('payment', formattedValue); // Actualiza el valor en react-hook-form
-  // };
-
   const urlBack = import.meta.env.VITE_URL_BACKEND;
 
   React.useEffect(() => {
