@@ -63,12 +63,12 @@ const PageCrearEnvios = () => {
     cursor: 'pointer',
     backgroundColor: 'black',
     borderRadius: '8px',
-    width: mobile ? '90px' : '134px',
-    height: mobile ? '90px' : '138px',
+    width: mobile ? '80px' : '134px',
+    height: mobile ? '80px' : '138px',
     overFlow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: '30px',
+    marginRight: mobile ? '5px' : '30px',
   };
 
   const {
@@ -122,15 +122,25 @@ const PageCrearEnvios = () => {
     const files = Array.from(event.target.files);
 
     // Actualizar el estado usando la versión de callback
-    setSelectedImages((prevImages) => {
-      const updatedImages = [...prevImages, ...files];
+    setSelectedImages(() => {
+      const updatedImages = files;
 
       // Validar que no se seleccionen más de 4 imágenes
       if (updatedImages.length > 4) {
         const notyf = new Notyf();
         notyf.error('Solo puedes seleccionar hasta 4 imágenes.');
-        return prevImages; // No actualizamos si supera el límite
+        return; // No actualizamos si supera el límite
       }
+
+      setShowImage1('');
+      setShowImage2('');
+      setShowImage3('');
+      setShowImage4('');
+
+      setValue('image1', '');
+      setValue('image2', '');
+      setValue('image3', '');
+      setValue('image4', '');
 
       // Procesar los archivos para generar las vistas previas
       updatedImages.forEach((file, index) => {
@@ -915,7 +925,7 @@ const PageCrearEnvios = () => {
                   my={2}
                   mb={2}
                   justifyContent={'flex-start'}
-                  spacing={1}
+                  style={{ gap: 0 }}
                 >
                   {showImage1 && (
                     <Box
@@ -926,7 +936,6 @@ const PageCrearEnvios = () => {
                       direction="row"
                       justifyContent={'center'}
                       style={imageStyles}
-                      width={mobile ? '370px' : '666px'}
                       onClick={() =>
                         document.getElementById('image1').click()
                       }

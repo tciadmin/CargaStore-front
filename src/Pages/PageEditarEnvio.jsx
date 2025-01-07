@@ -67,12 +67,12 @@ const PageEditarEnvio = () => {
     cursor: 'pointer',
     backgroundColor: 'black',
     borderRadius: '8px',
-    width: mobile ? '90px' : '134px',
-    height: mobile ? '90px' : '138px',
+    width: mobile ? '80px' : '134px',
+    height: mobile ? '80px' : '138px',
     overFlow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: '30px',
+    marginRight: mobile ? '5px' : '30px',
   };
 
   const {
@@ -124,15 +124,25 @@ const PageEditarEnvio = () => {
     const files = Array.from(event.target.files);
 
     // Actualizar el estado usando la versión de callback
-    setSelectedImages((prevImages) => {
-      const updatedImages = [...prevImages, ...files];
+    setSelectedImages(() => {
+      const updatedImages = files;
 
       // Validar que no se seleccionen más de 4 imágenes
       if (updatedImages.length > 4) {
         const notyf = new Notyf();
         notyf.error('Solo puedes seleccionar hasta 4 imágenes.');
-        return prevImages; // No actualizamos si supera el límite
+        return; // No actualizamos si supera el límite
       }
+
+      setShowImage1('');
+      setShowImage2('');
+      setShowImage3('');
+      setShowImage4('');
+
+      setValue('image1', '');
+      setValue('image2', '');
+      setValue('image3', '');
+      setValue('image4', '');
 
       // Procesar los archivos para generar las vistas previas
       updatedImages.forEach((file, index) => {
@@ -209,14 +219,23 @@ const PageEditarEnvio = () => {
         singleOrder?.package?.image4,
       ].filter(Boolean)
     );
-    singleOrder?.package?.image1 &&
+    if (singleOrder?.package?.image1) {
       setShowImage1(`${urlBack}/api/${singleOrder?.package?.image1}`);
-    singleOrder?.package?.image2 &&
+      setValue('image1', 'data');
+    }
+    if (singleOrder?.package?.image2) {
       setShowImage2(`${urlBack}/api/${singleOrder?.package?.image2}`);
-    singleOrder?.package?.image3 &&
+      setValue('image2', 'data');
+    }
+    if (singleOrder?.package?.image3) {
       setShowImage3(`${urlBack}/api/${singleOrder?.package?.image3}`);
-    singleOrder?.package?.image4 &&
+      setValue('image3', 'data');
+    }
+    if (singleOrder?.package?.image4) {
       setShowImage4(`${urlBack}/api/${singleOrder?.package?.image4}`);
+      setValue('image4', 'data');
+    }
+
     setValue('company_name', singleOrder?.customer?.company_name);
     setValue('company_phone', singleOrder?.customer?.company_phone);
     setValue('ruc', singleOrder?.customer?.ruc);
